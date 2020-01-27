@@ -14,6 +14,8 @@ namespace EcommerceBssl.Pages.Admin.SCategory
 {
     public class CreateModel : PageModel
     {
+        public string Message { get; set; }
+        public string Error { get; set; }
         private readonly EcommerceBssl.Data.ApplicationDbContext _context;
         [BindProperty]
         public IFormFile BannerImage { get; set; }
@@ -46,9 +48,17 @@ namespace EcommerceBssl.Pages.Admin.SCategory
                 SubCategory.BannerImage = filename;
                 _context.SubCategories.Add(SubCategory);
                 await _context.SaveChangesAsync();
+                Message = $"{filename} saved successfully";
+
+                ModelState.Clear();
+            }
+            else
+            {
+               // Error = $"{filename} already exists.";
             }
 
-            
+
+
 
             return RedirectToPage("./Index");
         }
