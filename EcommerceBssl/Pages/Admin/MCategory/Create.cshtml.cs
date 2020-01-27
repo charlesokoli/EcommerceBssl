@@ -21,6 +21,8 @@ namespace EcommerceBssl.Pages.Admin.MCategory
 
         public IActionResult OnGet()
         {
+            ////ViewData["MaincategoryList"] = new SelectList
+            ////(_context.Maincategories, "Id", "Name");
             return Page();
         }
 
