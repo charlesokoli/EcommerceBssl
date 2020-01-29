@@ -60,20 +60,17 @@ namespace EcommerceBssl.Api
                 if (id != null)
                 {
                     Maincategory = await _context.Maincategories.FirstOrDefaultAsync(m => m.Id == id);
-                  
+                    return Ok(Maincategory);
                 }
-
-                if (id == null)
+                else
                 {
-                    return NotFound($"No mainCat found for id:{id}");
+                    return NotFound($"No Id found");
                 }
-
-                return Ok(id);
             }
             catch (Exception)
             {
 
-                return NotFound($"Error processing Address for id:{id}");
+                return NotFound($"Error processing id:{id}");
             }
         }
 
