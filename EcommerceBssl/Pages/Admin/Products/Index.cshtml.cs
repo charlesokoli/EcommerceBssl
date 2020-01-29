@@ -24,7 +24,8 @@ namespace EcommerceBssl.Pages.Admin.Products
         public async Task OnGetAsync()
         {
             Product = await _context.Products
-                .Include(p => p.SubCategory).ToListAsync();
+                .Include(p => p.SubCategory).Include(l => l.Images).ToListAsync();
+
         }
     }
 }

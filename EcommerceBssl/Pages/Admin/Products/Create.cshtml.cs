@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using EcommerceBssl.Data;
 using EcommerceBssl.Models;
+using Microsoft.AspNetCore.Http;
+using EcommerceBssl.UtilityMethods;
 
 namespace EcommerceBssl.Pages.Admin.Products
 {
@@ -27,7 +29,9 @@ namespace EcommerceBssl.Pages.Admin.Products
 
         [BindProperty]
         public Product Product { get; set; }
-
+        [BindProperty]
+        public List<IFormFile> ProductImages { get; set; }
+        //public List<IFormFile> ProductImages { get; set; }
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -40,6 +44,18 @@ namespace EcommerceBssl.Pages.Admin.Products
             _context.Products.Add(Product);
             await _context.SaveChangesAsync();
 
+            var prdId = Product.Id;
+            var images = new List<Image>();
+            foreach(var img in ProductImages)
+            {
+                if(img !=null && img.Length > 0)
+                {
+                    var filepath = await FileUpload.UploadFile(img,"productimages");
+                    images.Add(new Image { Link = filepath, ProductId = prdId });
+                }
+            }
+            _context.Images.AddRange(images);
+             await _context.SaveChangesAsync();
             return RedirectToPage("./Index");
         }
     }

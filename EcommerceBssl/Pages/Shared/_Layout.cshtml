@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@inject EcommerceBssl.Data.ApplicationDbContext db
+@using Microsoft.EntityFrameworkCore
+@{ 
+    var listMainCategories = db.Maincategories.Include(m => m.SubCategories);
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -179,10 +184,27 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products <b class="caret"></b></a>
                             <ul class="dropdown-menu multi-column columns-3">
                                 <div class="row">
+                                    @{
+                                        @foreach (var itemlist in listMainCategories)
+                                        {
+                                            <div class="col-sm-3">
+                                                <ul class="multi-column-dropdown">
+
+                                                    <h6>@itemlist.Name</h6>
+                                                    @foreach (var sublist in itemlist.SubCategories)
+                                                    {
+                                                        <li><a asp-page="/Pages/Customer/CProducts/Group" asp-route-sgid="@sublist.Id">@sublist.Name</a></li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="row">
                                     <div class="col-sm-3">
                                         <ul class="multi-column-dropdown">
                                             <h6>Mobiles</h6>
-                                            <li><a href="products.html">Mobile Phones</a></li>
+                                            <li><a href="">Mobile Phones</a></li>
                                             <li><a href="products.html">Mp3 Players <span>New</span></a></li>
                                             <li><a href="products.html">Popular Models</a></li>
                                             <li><a href="products.html">All Tablets<span>New</span></a></li>
@@ -228,8 +250,9 @@
                         <li class="w3pages">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrator <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a asp-page="/Admin/MainCategory/Index">Main Category</a></li>
-                                <li><a asp-page="/Admin/SubCat/Index">Sub Category</a></li>
+                                <li><a asp-page="/Admin/MCategory/Index">Main Category</a></li>
+                                <li><a asp-page="/Admin/SCategory/Index">Sub Category</a></li>
+                                <li><a asp-page="/Admin/Products/Index">Products</a></li>
                                 <li><a asp-page="/Admin/Products/Index">Products</a></li>
                             </ul>
                         </li>
@@ -260,7 +283,7 @@
                 </div>
             </nav>
         </header>*@
-    <div class="container">
+    <div class="container main-container-margin" >
         <partial name="_CookieConsentPartial" />
         <main role="main" class="pb-3">
             @RenderBody()

@@ -28,6 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Product[0].SubCategory)
             </th>
+            <th>
+                sample image
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -48,6 +51,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SubCategory.Name)
+            </td>
+            <td>
+                @if (item.Images.Any())
+                {
+                    foreach (var img in item.Images)
+                    {
+                        <img src="~/@item.Images[0].Link" width="70" height="70" />
+                    }
+                }
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

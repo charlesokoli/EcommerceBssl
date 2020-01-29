@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Product.Name" class="control-label"></label>
@@ -35,8 +35,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="Product.SubCategoryId" class="control-label"></label>
-                <select asp-for="Product.SubCategoryId" class ="form-control" asp-items="ViewBag.SubCategoryId"></select>
+                <select asp-for="Product.SubCategoryId" class="form-control" asp-items="ViewBag.SubCategoryId"></select>
+
             </div>
+            <div id="imagesList" class="form-group">
+                <label class="control-label">Images</label>
+                <input type="file" multiple name="ProductImages"  />
+                @*<input asp-for="ProductImages[0]" class="form-control" />
+
+        <input type="hidden" id="lastindex" value="0" />*@
+            </div>
+            @*<div class="form-group">
+                <button id="btnMore" class="btn btn-warning">New Image</button>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -50,4 +61,23 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+//adding more image btn
+<script>
+    $("#btnMore").on('click', function (event) {
+        event.preventDefault;
+        var currindex = $("#lastindex").val();
+        var newindex = Number(currindex) + 1;
+        newImageControl(newindex);
+        $("#lastindex").val(newindex);
+        return false;
+
+    })
+    function newImageControl(index) {
+        var html = `<input class="form-control" type="file" id="ProductImages_${index}_" name="ProductImages[${index}]">`;
+        $("#imagesList").append(html);
+    }
+    
+</script>
+
 }
